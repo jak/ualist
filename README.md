@@ -1,7 +1,8 @@
-h1. Useragent Tracker thingy!
+Useragent Tracker thingy!
+=========================
 
-New devices/browsers come out all the time, and sometimes you need their useragent.
+New devices/browsers come out all the time, and sometimes you need the useragent.
 
-This stores useragent strings, so you can then go on your PC and copy and paste it.
+This stores useragent strings, so you can visit the site on the device then go to the site on your PC and copypaste it.
 
-Runs at http://ua.jak.io/
+Runs at [ua.jak.io](http://ua.jak.io/)
