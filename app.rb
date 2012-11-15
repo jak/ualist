@@ -2,6 +2,7 @@ require 'sinatra'
 require 'haml'
 
 HISTORY_FILE = 'history.marshal'
+HISTORY_COUNT = 50
 
 get '/' do
   @useragent = request.user_agent
@@ -19,7 +20,7 @@ get '/' do
   end
 
   File.open(HISTORY_FILE, "w") do |f| 
-    Marshal.dump(@useragents.last(50), f)
+    Marshal.dump(@useragents.last(HISTORY_COUNT), f)
   end
 
   haml :index
