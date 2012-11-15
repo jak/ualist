@@ -1,13 +1,27 @@
 require 'sinatra'
 require 'haml'
 
-get '/wut' do
-  redirect 'https://github.com/jakspalding/ualist'
-end
+HISTORY_FILE = 'history.marshal'
 
 get '/' do
   @useragent = request.user_agent
-  @useragents = []
+  
+  if File.exists? HISTORY_FILE then
+    @useragents = File.open(HISTORY_FILE) { |f| Marshal.load(f) }
+  
+    # Remove any old occurences because duplicates look ugly
+    @useragents.delete(@useragent)
+  
+    # Push the just used user agent string to the top of the pile
+    @useragents.push(@useragent)
+  else
+    @useragents = [@useragent]
+  end
+
+  File.open(HISTORY_FILE, "w") do |f| 
+    Marshal.dump(@useragents.last(50), f)
+  end
+
   haml :index
 end
 
@@ -15,8 +29,8 @@ __END__
 
 @@ index
 %html
-  %h1=@useragent
+  %h1= @useragent
   %ul
-  - @useragents.each do |useragent|
-    %li= useragent
-  %a{:href => url('/wut')} What is this?
+    - @useragents.reverse.each do |useragent|
+      %li= useragent
+  %a{href: 'https://github.com/jakspalding/ualist'} What is this?
