@@ -26,13 +26,3 @@ get '/' do
 
   haml :index
 end
-
-__END__
-
-@@ index
-%html
-  %h1= @useragent
-  %ul
-    - @useragents.reverse.each do |useragent|
-      %li= useragent
-  %a{href: 'https://github.com/jakspalding/ualist'} What is this?

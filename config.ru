@@ -1,10 +1,9 @@
-require 'rubygems'
-require "bundler/setup"
+require 'bundler/setup'
 require 'sinatra'
 
 set :env,  :production
 disable :run
 
-require 'app.rb'
+require './app.rb'
 
 run Sinatra::Application
