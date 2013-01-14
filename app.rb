@@ -3,7 +3,7 @@ require 'sinatra'
 require 'haml'
 
 HISTORY_FILE = 'history.marshal'
-HISTORY_COUNT = 50
+HISTORY_COUNT = 500
 
 get '/' do
   @useragent = request.user_agent
