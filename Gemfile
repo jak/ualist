@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
 gem 'sinatra'
 gem 'haml'
-gem 'capistrano', group: :development
+gem "data_mapper"
+gem "dm-postgres-adapter"
+gem "pg"
