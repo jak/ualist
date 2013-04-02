@@ -9,7 +9,7 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3::memory:')
 class Useragent
   include DataMapper::Resource
     property :id, Serial 
-    property :useragent, String, :length => 1024
+    property :useragent, Text, :lazy => false
     property :created_at, DateTime, :default => lambda { |r,p| DateTime.now }
 end
 
