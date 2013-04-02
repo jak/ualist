@@ -24,7 +24,7 @@ get '/' do
     logger.warn ua.errors.inspect
   end
 
-  @useragents = Useragent.all(:fields => [:useragent], :unique => true, :order => [:created_at.desc])
+  @useragents = Useragent.all(:fields => [:useragent, :created_at], :unique => true, :order => [:created_at.desc])
   
   haml :index
 end
