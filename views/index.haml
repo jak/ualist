@@ -18,8 +18,8 @@
         text-decoration: underline;
       }
   %body
-    %h1= @useragent
+    %h1= @useragents.shift
     %ul
-      - @useragents.reverse.each do |useragent|
+      - @useragents.each do |useragent|
         %li= useragent
     %a{href: 'https://github.com/jakspalding/ualist'} What is this?

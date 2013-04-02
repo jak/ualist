@@ -1,28 +1,22 @@
-require "bundler/setup"
+require 'bundler/setup'
 require 'sinatra'
 require 'haml'
+require 'data_mapper'
 
-HISTORY_FILE = 'history.marshal'
-HISTORY_COUNT = 500
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3::memory:')
+
+class Useragent
+  include DataMapper::Resource
+    property :id, Serial 
+    property :useragent, String
+    property :created_at, DateTime
+end
+
+DataMapper.finalize.auto_upgrade!
 
 get '/' do
-  @useragent = request.user_agent
+  Useragent.create(:useragent => request.user_agent, :created_at => Time.now)
+  @useragents = Useragent.all(:fields => [:useragent], :unique => true, :order => [:created_at.desc])
   
-  if File.exists? HISTORY_FILE then
-    @useragents = File.open(HISTORY_FILE) { |f| Marshal.load(f) }
-  
-    # Remove any old occurences because duplicates look ugly
-    @useragents.delete(@useragent)
-  
-    # Push the just used user agent string to the top of the pile
-    @useragents.push(@useragent)
-  else
-    @useragents = [@useragent]
-  end
-
-  File.open(HISTORY_FILE, "w") do |f| 
-    Marshal.dump(@useragents.last(HISTORY_COUNT), f)
-  end
-
   haml :index
 end
