@@ -1,25 +1,32 @@
 %html
   %head
+    %link{href: 'http://fonts.googleapis.com/css?family=Lato:400,700', rel: 'stylesheet', type: 'text/css'}
     :css
-      * {
-        font-family: 'Lucida Grande';
+      h1, li, a {
+        font-family: 'Lato', sans;
         -webkit-font-smoothing: antialiased;
         color: rgb(51, 51, 51);
-      }
-      h1, ul li {
         font-size: 16px;
+        color: #34495E;
+      }
+      h1 {
+        font-size: 18px;
+        font-weight: 700;
       }
       a {
-        color: rgb(0, 136, 204);
+        color: #3498DB;
         text-decoration: none;
         font-size: 13px;
       }
       a:hover, a:focus, a:active {
         text-decoration: underline;
       }
+      ul {
+        list-style-type: none;
+      }
   %body
     %h1= @useragents.shift.useragent
     %ul
       - @useragents.each do |useragent|
         %li= useragent.useragent
-    %a{href: 'https://github.com/jakspalding/ualist'} What is this?
+    %a{class: 'info', href: 'https://github.com/jakspalding/ualist'} What is this?
