@@ -4,16 +4,10 @@ require 'sinatra/activerecord'
 require 'haml'
 require 'active_record'
 
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'sqlite3::memory:')
-
-ActiveRecord::Schema.define do
-  create_table :useragents do |t|
-    t.column :useragent, :text
-    t.column :last_accessed, :datetime
-  end
-end
+set :database, ENV['DATABASE_URL'] || 'sqlite3:/:memory:'
 
 class Useragent < ActiveRecord::Base
+  validates_presence_of :useragent
 end
 
 get '/' do
