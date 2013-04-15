@@ -5,6 +5,7 @@ gem 'haml'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'puma'
+gem 'rake'
 group :production do
   gem 'pg'
 end
