@@ -1,30 +1,29 @@
 require 'bundler/setup'
 require 'sinatra'
+require 'sinatra/activerecord'
 require 'haml'
-require 'data_mapper'
+require 'active_record'
 
-DataMapper::Logger.new(STDOUT, :debug)
-DataMapper.setup(:default, ENV['DATABASE_URL'] || 'sqlite3::memory:')
+ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'] || 'sqlite3::memory:')
 
-class Useragent
-  include DataMapper::Resource
-    property :id, Serial 
-    property :useragent, Text, :lazy => false
-    property :created_at, DateTime, :default => lambda { |r,p| DateTime.now }
+ActiveRecord::Schema.define do
+  create_table :useragents do |t|
+    t.column :useragent, :text
+    t.last_accessed :datetime
+  end
 end
-
-DataMapper.finalize.auto_upgrade!
 
 get '/' do
   logger.info "Got a request from #{request.user_agent}" 
-  ua = Useragent.new(:useragent => request.user_agent)
+  ua = Useragent.find_or_create_by_useragent(request.user_agent)
+  ua.last_accessed = DateTime.now
   
   if not ua.save
     logger.warn "Useragent wasn't saved."
     logger.warn ua.errors.inspect
   end
 
-  @useragents = Useragent.all(:fields => [:useragent], :unique => true, :order => [:created_at.max])
+  @useragents = Useragent.order("last_accessed DESC")
 
   haml :index
 end

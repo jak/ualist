@@ -1,7 +1,7 @@
 require 'bundler/setup'
 require 'sinatra'
 
-set :env,  :production
+set :env, :production
 disable :run
 
 require './app.rb'
