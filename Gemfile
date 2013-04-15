@@ -6,6 +6,7 @@ gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'puma'
 gem 'rake'
+gem 'sanitize'
 group :development do
   gem 'sqlite3'
 end

@@ -3,6 +3,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'haml'
 require 'active_record'
+require 'sanitize'
 
 set :database, ENV['DATABASE_URL'] || 'sqlite3:/:memory:'
 
@@ -11,8 +12,9 @@ class Useragent < ActiveRecord::Base
 end
 
 get '/' do
-  logger.info "Got a request from #{request.user_agent}" 
-  ua = Useragent.find_or_create_by_useragent(request.user_agent)
+  useragent = Sanitize.clean(request.user_agent)
+  logger.info "Got a request from #{useragent}" 
+  ua = Useragent.find_or_create_by_useragent(useragent)
   ua.last_accessed = DateTime.now
 
   if not ua.save
