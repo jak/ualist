@@ -13,11 +13,14 @@ ActiveRecord::Schema.define do
   end
 end
 
+class Useragent < ActiveRecord::Base
+end
+
 get '/' do
   logger.info "Got a request from #{request.user_agent}" 
   ua = Useragent.find_or_create_by_useragent(request.user_agent)
   ua.last_accessed = DateTime.now
-  
+
   if not ua.save
     logger.warn "Useragent wasn't saved."
     logger.warn ua.errors.inspect
