@@ -12,10 +12,11 @@ class Useragent < ActiveRecord::Base
 end
 
 get '/' do
+  logger.info "Got a request from #{request.user_agent}" 
+  
   useragent = Sanitize.clean(request.user_agent)
   return if useragent != request.user_agent
 
-  logger.info "Got a request from #{useragent}" 
   ua = Useragent.find_or_create_by_useragent(useragent)
   ua.last_accessed = DateTime.now
 
