@@ -13,6 +13,8 @@ end
 
 get '/' do
   useragent = Sanitize.clean(request.user_agent)
+  return if useragent != request.user_agent
+
   logger.info "Got a request from #{useragent}" 
   ua = Useragent.find_or_create_by_useragent(useragent)
   ua.last_accessed = DateTime.now
@@ -22,7 +24,7 @@ get '/' do
     logger.warn ua.errors.inspect
   end
 
-  @useragents = Useragent.order("last_accessed DESC")
+  @useragents = Useragent.order("last_accessed DESC").limit(30)
 
   haml :index
 end
