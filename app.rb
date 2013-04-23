@@ -12,8 +12,11 @@ class Useragent < ActiveRecord::Base
 end
 
 get '/' do
+  logger.info "Got a request from #{request.user_agent}" 
+  
   useragent = Sanitize.clean(request.user_agent)
-  logger.info "Got a request from #{useragent}" 
+  return if useragent != request.user_agent
+
   ua = Useragent.find_or_create_by_useragent(useragent)
   ua.last_accessed = DateTime.now
 
@@ -22,7 +25,7 @@ get '/' do
     logger.warn ua.errors.inspect
   end
 
-  @useragents = Useragent.order("last_accessed DESC")
+  @useragents = Useragent.order("last_accessed DESC").limit(30)
 
   haml :index
 end
